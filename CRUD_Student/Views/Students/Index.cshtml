@@ -1,0 +1,88 @@
+﻿@model IEnumerable<CRUD_Student.Models.Students>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Group)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RollNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                Absent
+            </th>
+            <th>
+                Present
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShowImage)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr data-user-id="@item.Id">
+                <!-- Thêm thuộc tính dữ liệu cho mỗi hàng -->
+                <td>
+                    @Html.DisplayFor(modelItem => item.Group)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RollNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    <input type="checkbox" id="AbsentCheckbox-@item.Id" name="Absent" value="@item.Id" @(item.Absent ? "checked" : "") onclick="handleCheckboxClick(this)" />
+                    <label for="AbsentCheckbox-@item.Id">Absent</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="PresentCheckbox-@item.Id" name="Present" value="@item.Id" @(item.Present ? "checked" : "") onclick="handleCheckboxClick(this)" />
+                    <label for="PresentCheckbox-@item.Id">Present</label>
+                </td>
+                <td>
+                    <textarea id="CommentTextArea-@item.Id" class="form-control">@item.Comment</textarea>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShowImage)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    function handleCheckboxClick(checkbox) {
+        var userId = checkbox.closest('tr').dataset.userId;
+        var userCheckboxes = document.querySelectorAll('[data-user-id="' + userId + '"] input[type="checkbox"]');
+
+        userCheckboxes.forEach(function (box) {
+            if (box !== checkbox) {
+                box.checked = false;
+            }
+        });
+    }
+</script>
